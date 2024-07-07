@@ -37,14 +37,14 @@ class AuthController {
     const { email, password } = req.body
     const emailFound = await this.isEmailFound(email)
     if (!emailFound) {
-      throw new UnauthorizedException('Invalid crediantials')
+      throw new BadRequestException('Invalid crediantials')
     }
 
     const oldHashedPassword = emailFound.password
     const isPasswordMatched = await bcrypt.compare(password, oldHashedPassword)
 
     if (!isPasswordMatched) {
-      throw new UnauthorizedException('Invalid crediantials')
+      throw new BadRequestException('Invalid crediantials')
     }
     const dataToShow = {
       email: emailFound.email,
