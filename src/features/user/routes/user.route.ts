@@ -5,6 +5,6 @@ import { createUserSchema } from '../schema/user.schema'
 
 const userRoutes = Router()
 
-userRoutes.post('/register', validateSchema(createUserSchema), userController.createUser)
+// userRoutes.post('/register', validateSchema(createUserSchema), userController.createUser)
 
 export default userRoutes
