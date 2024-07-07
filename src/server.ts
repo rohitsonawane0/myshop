@@ -1,6 +1,8 @@
-import express, { Application } from 'express'
+import express, { Application, NextFunction, Request, Response } from 'express'
 import dotenv from 'dotenv'
 import appRoutes from './routes/app.route'
+import { CustomError, NotFoundException } from './globals/middlewares/error.middleware'
+import { HTTPS_STATUS } from './globals/contants/http'
 dotenv.config()
 
 class Server {
@@ -28,7 +30,14 @@ class Server {
   }
   public setupGlobalErrorHandler(): void {
     this.app.all('*', (req, res, next) => {
-      res.status(404).json({ message: 'Route not found' })
+      next(new NotFoundException('Route not found'))
+    })
+
+    this.app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+      if (err instanceof CustomError) {
+        return res.status(err.statusCode).json(err.getErrorResponse())
+      }
+      return res.status(HTTPS_STATUS.INTERNAL_SERVER_ERROR).json({ status: 'error', message: 'Something went wrong' })
     })
   }
 

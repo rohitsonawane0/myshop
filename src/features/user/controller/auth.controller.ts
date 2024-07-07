@@ -4,8 +4,8 @@ import { HTTPS_STATUS } from '~/globals/contants/http'
 import { BadRequestException } from '~/globals/middlewares/error.middleware'
 import { catchAsync } from '~/utils/utils'
 
-class UserController {
-  public createUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+class AuthController {
+  public registerUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { email, password, firstName, lastName, avatar } = req.body
     if (email === 'dsf@gmail.com') {
       throw new BadRequestException('Email already used')
@@ -20,4 +20,4 @@ class UserController {
   })
 }
 
-export const userController: UserController = new UserController()
+export const authController = new AuthController()
